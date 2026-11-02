@@ -1,0 +1,23 @@
+📁 animation-exercises/
+📊 Итог: Папок: 5, Файлов: 15, Уровней вложенности: 4
+
+├── frontend
+│   ├── assets
+│   ├── css
+│   │   └── style.css
+│   ├── index.html
+│   └── js
+│       ├── exercises
+│       │   ├── 01-rotate.js
+│       │   ├── 02-flip.js
+│       │   ├── 03-scale.js
+│       │   ├── 04-translate.js
+│       │   ├── 05-fade.js
+│       │   ├── 06-bounce.js
+│       │   ├── 07-shake.js
+│       │   ├── 08-pulse.js
+│       │   ├── 09-slide.js
+│       │   └── 10-spin.js
+│       └── main.js
+├── requirements.txt
+└── tree.txt
