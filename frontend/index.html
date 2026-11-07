@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Анимационные упражнения</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/anims.css">
+  </head>
+  <body>
+    <!-- ШАПКА СТРАНИЦЫ -->
+    <header class="page-header">
+      <h1>🎨 Анимационные упражнения</h1>
+      <p class="hint">Нажми "Старт", чтобы запустить анимацию, "Стоп" - чтобы остановить.</p>
+    </header>
+
+    <!-- КОНТЕЙНЕР ДЛЯ КАРТОЧЕК
+      Сюда main.js сложит все упражнения. Изначально он ПУСТОЙ:
+      Разметку строит JavaScript, а не HTML.
+    -->
+    <main id="exercises-container" class="exercises-grid"></main>
+
+    <!-- ПОДКЛЮЧЕНИЕ СКРИПТОВ
+      Порядок важен:
+      1. Сначала все файлы упражнений - они регистрируются вобщем списке window.Exercises.
+      2. В конце main.js - он читает список и строит карточки.
+    -->
+    <script src="js/exercises/01-rotate.js"></script>
+    <script src="js/exercises/02-flip.js"></script>
+    <script src="js/exercises/03-scale.js"></script>
+    <script src="js/exercises/04-translate.js"></script>
+    <script src="js/exercises/05-fade.js"></script>
+    <script src="js/exercises/06-bounce.js"></script>
+    <script src="js/exercises/07-shake.js"></script>
+    <script src="js/exercises/08-pulse.js"></script>
+    <script src="js/exercises/09-slide.js"></script>
+    <script src="js/exercises/10-spin.js"></script>
+    <script src="js/exercises/11-skew.js"></script>
+    <script src="js/exercises/12-glow.js"></script>
+
+    <!-- ГЛАВНЫЙ ФАЙЛ - читает список упражнений и отрисовывает их -->
+    <script src="js/main.js"></script>
+    <div style="height: 2000px;"></div>
+  </body>
+</html>
