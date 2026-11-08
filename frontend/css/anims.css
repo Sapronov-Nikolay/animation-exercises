@@ -1,0 +1,217 @@
+/* ================================================================
+   АНИМАЦИИ - Пишем правила поведения фигур, которые создаст JS
+   ================================================================
+  Как это устроено:
+  1. Класс .running-XXX добавляется фигуре по нажатии "Старт" (это делает main.js)
+  2. Внутри класса - короткая запись animation:
+      - имя_анимации - ссылка на @keyframes ниже;
+      - длительность - берём из переменной var(--anim-duration);
+      - linear / ease-in-out - "характер движения":
+        * linear = равномерно.
+        * ease-in-out = плавно разгоняется и плавно тормозит.
+      - infinite - движения повторяются бесконечно, пока не нажмут "Стоп".
+  3. @keyframes описывает, ЧТО меняется:
+      - from - начало;
+      - to - конец.
+    Если писать в процентах:
+      - 0% - старт;
+      - 50% - середина;
+      - 100% - финиш.
+*/
+
+/* 1. Вразение: равномерный поворот от 0° до 360° - полный оборот */
+.running-rotate {
+  animation: rotateAnim var(--anim-duration) linear infinite;
+}
+@keyframes rotateAnim {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 2. Переворот: вращение вокруг вертикальной оси (как монетка на столе).
+  В процентах: на 50% анимации фигура повёрнута на 180°, а к 100% - уже целый оборот */
+.running-flip {
+  animation: flipAnim var(--anim-duration) ease-in-out infinite;
+}
+@keyframes flipAnim {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+/* 3. Масштабирование: рост и уменьшение. */
+.running-scale {
+  animation: scaleAnim var(--anim-duration) ease-in-out infinite;
+}
+@keyframes scaleAnim {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+}
+
+/* 4. Смещение: фигура обходит 4 угла сцены. */
+.running-translate {
+  animation: translateAnim var(--anim-duration) ease-in-out infinite;
+}
+@keyframes translateAnim {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(40px, 0);
+  }
+  50% {
+    transform: translate(40px, 40px);
+  }
+  75% {
+    transform: translate(0, 40px);
+  }
+}
+
+/* 5. Затухание: меняем прозрачность фигуры:
+    - 1 = полностью видимый;
+    - 1.15 = почти невидимый. */
+.running-fade {
+  animation: fadeAnim var(--anim-duration) ease-in-out infinite;
+}
+@keyframes fadeAnim {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+/* 6. Отскок: движение только вверх-вниз. Отрицательный сдвиг по Y (--60px) поднимает фигуру ВВЕРХ.
+cubic-bezier(...) - особая "кривая скорости": даёт резкий прыжок и мягкое приземление */
+.running-bounce {
+  animation: bounceAnim var(--anim-duration) cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+}
+@keyframes bounceAnim {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-60px);
+  }
+}
+
+/* 7. Дрожание: быстрые рывки влево-вправо. calc(var(--anim-duration) * 0.3 - ВЫЧИСЛЕНИЕ: берём общую длительность и умножанием на 0.3,
+чтобы дрожание было в 3 раза быстрее основного ритма */
+.running-shake {
+  animation: shakeAnim calc(var(--anim-duration) * 0.3) linear infinite;
+}
+@keyframes shakeAnim {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-8px);
+  }
+  80% {
+    transform: translateX(8px);
+  }
+}
+
+/* 8. Пульсация: одновременно растёт размер и меняется цвет фона.
+  В середине анимации (50%) фигура крепрнее и зелёная, в начале и в конце - обычная */
+.running-pulse {
+  animation: pulseAnim var(--anim-duration) ease-in-out infinite;
+}
+@keyframes pulseAnim {
+  0%, 100% {
+    transform: scale(1);
+    background-color: var(--shape-color);
+  }
+  50% {
+    transform: scale(1.25);
+    background-color: #22c55e;
+  }
+}
+
+/* 9. Скольжение: фигура ходит от левого края к правому и обратно. Так как translateX(-50px) выталкивает её за край сцены,
+overflow: hidden у .ecene обрезает выезд за край. Фигура как бы в объекте */
+.running-slide {
+  animation: slideAnim var(--anim-duration) ease-in-out infinite;
+}
+@keyframes slideAnim {
+  0%, 100% {
+    transform: translateX(-50px);
+  }
+  50% {
+    transform: translateX(50px);
+  }
+}
+
+/* 10. Быстрое вращение: как №1, но вдвое быстрее (умножаем длительность на 0.5)
+и с плавной сменой цвета от исходного к розовому */
+.running-spin {
+  animation: spinAnim calc(var(--anim-duration) * 0.5) linear infinite;
+}
+@keyframes spinAnim {
+  from {
+    transform: rotate(0deg);
+    background-color: var(--shape-color);
+  }
+  50% {
+    background-color: #ec4899;
+  }
+  to {
+    transform: rotate(360deg);
+    background-color: var(--shape-color);
+  }
+}
+
+/* 11. Наклон: фигура перекашивается влево-вправо. skewX() наклоняет элемент по горизонтали:
+      - положительный угол - вверх уезжает вправо,
+      - отрицательный угол - влево.
+Вместе получается желе */
+.running-skew {
+  animation: skewAnim var(--anim-duration) ease-in-out infinite;
+}
+@keyframes skewAnim {
+  0%, 100% {
+    transform: skewX(0deg);
+  }
+  25% {
+    transform: skewX(20deg);
+  }
+  75% {
+    transform: skewX(-20deg);
+  }
+}
+
+/* 12. Свечение: вокруг фигуры разгорается и гаснет тень.
+ВАЖНЫЙ нюанс: box-shadow = "дорогое" для браузера свойство. В отличие от transform и opacity, его изменение заставляет браузер
+пересчитывать картинку каждый кадр. Дляодной фигуры это незаметно, но на десятках элементов может подтормаживать. */
+.running-glow {
+  animation: glowAnim var(--anim-duration) ease-in-out infinite;
+}
+@keyframes glowAnim {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(74, 222, 128, 0);
+  }
+  50% {
+    box-shadow: 0 0 30px 10px rgba(74, 222, 128, 0.7);
+  }
+}
