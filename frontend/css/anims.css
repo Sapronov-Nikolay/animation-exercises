@@ -173,9 +173,12 @@ overflow: hidden у .ecene обрезает выезд за край. Фигур
     transform: rotate(0deg);
     background-color: var(--shape-color);
   }
+  50% {
+    background-color: #ec4899;
+  }
   to {
     transform: rotate(360deg);
-    background-color: #ec4899;
+    background-color: var(--shape-color);
   }
 }
 
