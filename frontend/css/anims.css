@@ -215,3 +215,75 @@ overflow: hidden у .ecene обрезает выезд за край. Фигур
     box-shadow: 0 0 30px 10px rgba(74, 222, 128, 0.7);
   }
 }
+
+/* 13. Орбита: движение по кругу */
+.running-orbit {
+  animation: orbitAnim var(--anim-duration) linear infinite;
+}
+@keyframes orbitAnim {
+  from {
+    transform: rotate(0deg) translateX(40px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(40px) rotate(-360deg);
+  }
+}
+
+/* 14. 3D Переворот */
+.running-flip3d {
+  animation: flip3dAnim var(--anim-duration) ease-in-out infinite;
+}
+@keyframes flip3dAnim {
+  0% {
+    transform: perspective(400px) rotateX(0deg);
+  }
+  50% {
+    transform: perspective(400px) rotateX(180deg);
+  }
+  100% {
+    transform: perspective(400px) rotateX(360deg);
+  }
+}
+
+/* 15. Морфинг формы (квадрат -> круг -> квадрат) */
+.running-morph {
+  animation: morphAnim var(--anim-duration) ease-in-out infinite;
+}
+@keyframes morphAnim {
+  0%, 100% {
+    border-radius: 4px;
+  }
+  33% {
+    border-radius: 50%;
+  }
+  66% {
+    border-radius: 20px 4px 20px 4px;
+  }
+}
+
+/* 16. Мерцание. Резкое мерцание с разным ритмом вместо плавного дыхания */
+.running-flicker {
+  animation: flickerAnim calc(var(--anim-duration) * 0.2) steps(1) infinite;
+}
+@keyframes flickerAnim {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--shape-color);
+  }
+  20% {
+    opacity: 0.2;
+    box-shadow: 0 0 0 var(--shape-color);
+  }
+  40% {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--shape-color);
+  }
+  45% {
+    opacity: 0.4;
+    box-shadow: 0 0 5px var(--shape-color);
+  }
+  85% {
+    opacity: 1;
+    box-shadow: 0 0 20px var(--shape-color);
+  }
+}
