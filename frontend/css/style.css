@@ -1,0 +1,274 @@
+/* ================================================================
+  1. CSS-ПЕРЕМЕННЫЕ (ШАБЛОНЫ ЗНАЧЕНИЙ)
+  Зачем: каждое упражнение может переопределить эти переменные только для себя - через shapeStyle в своём JS-файлы.
+  Так один и тот же .shape может быть разного цвета и размера, не дублируя CSS.
+  Пример:
+    в 01-rotate.js стоит shapeStyle: { '--shape-color': '#3b82f6' } - и именно этот квадрат станет синим,
+    остальные останутся с дефолтным цветом.
+=================================================================== */
+:root {
+  --shape-size: 60px;         /* Размер фигуры по умолчанию */
+  --shape-color: #667eea;   /* Цвет фигуры по умолчанию */
+  --anim-duration: 1.5s;      /* Длительность одного цикла анимации */
+
+  /* Общая паллитра страницы */
+  --bg-color: #1e1e2f;
+  --card-bg: #2a2a40;
+  --text-color: #ffffff;
+  --muted-color: #a0a0b0;
+  --accent-color: #667eea;
+  --accent-hover: #764ba2;
+  --btn-start: #22c55e;
+  --btn-stop: #ef4444;
+}
+
+/* ================================================================
+  2. БАЗОВЫЕ СТИЛИ СТРАНИЦЫ
+=================================================================== */
+* {
+  box-sizing: border-box;
+}
+
+/* body — стили всей страницы. */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0 20px 20px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  align-items: stretch;
+}
+
+/* СВЕТ ПОВЕРХ ШАПКИ */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300px; /* Высота светового пятна */
+  
+  /* Мягкий градиент, который светит сверху вниз */
+  background: radial-gradient(
+    ellipse 70% 200px at 50% -50px,
+    rgba(102, 126, 234, 0.25) 0%, /* Яркость свечения поверх шапки */
+    transparent 100%
+  );
+  
+  pointer-events: none; /* Клики проходят сквозь свет */
+  z-index: 20;          /* Выше шапки (у неё z-index: 10) */
+}
+
+
+/* Заголовок сверху страницы */
+.page-header {
+  text-align: center;
+  /* Шапка "прилипает" к верху окна на скроле */
+  position: sticky;
+  top: 0;
+  /* не прозрачный фон - скрывает карточки, уезжающие вверх */
+  background: var(--bg-color);
+  /* Расстягиваем шапку на всю ширину body (компенсируем padding: 20px) */
+  box-shadow: 0 0 5px 0 var(--bg-color);
+  margin: 0 -20px;
+  padding: 20px;
+  z-index: 10;
+}
+
+/* Градиент-"Растворение" под шапкой плавно исчезает, а не обрезаются резкой линией. */
+.page-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -70px;
+  height: 90px;
+  background: linear-gradient(
+    to bottom, var(--bg-color) 22%, var(--bg-color) 20%,  rgba(30, 30, 47, 0) 100%
+  );
+  pointer-events: none;
+}
+
+h1 {
+  margin-bottom: 5px;
+}
+.hint {
+  color: var(--muted-color);
+  margin: 0;
+}
+
+/* ================================================================
+   3. СЕТКА И КАРТОЧКИ
+   Grid — сетка. Именно она раскладывает карточки рядами.
+   ================================================================ */
+.exercises-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 70px;
+  margin: 70px auto 0;
+}
+
+/* Сама карточка упражнения */
+.exercises-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  /* Светящаяся верхняя кромка + обычная тень */
+  position: relative;
+  box-shadow: 0 -6px 24px -8px rgba(102, 126, 234, 0.5), 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Размытие светящейся кромки сверху - буд-то свет цепляет только центр верхнего края,
+   а к углам гаснет. */
+.exercises-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg, transparent 0%, var(--accent-color) 50%, transparent 100%
+  );
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+/* Заголовок внутри карточки */
+.exercises-card h2 {
+  font-size: 1.1rem;
+  margin: 0 0 8px 0;
+  color: #ffffff;
+}
+
+/* Блок с техническим описанием */
+.tech-info {
+  background: rgba(0,0,0,0.2);
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  margin-bottom: 15px;
+  flex-grow: 1;
+}
+
+/* Теги <code> внутри тех-блока — те, что подсвечивают CSS-свойства жёлтым */
+.tech-info code {
+  background: rgba(255,255,255,0.1);
+  padding: 2px 4px;
+  border-radius: 4px;
+  color: #fbbf24;
+  font-family: monospace;
+}
+
+/* ================================================================
+   4. СЦЕНА И ФИГУРЫ
+   СЦЕНА - тёмный прямоугольник внутри карточки, где танцует фигура
+   ================================================================ */
+.scene {
+  width: 100%;
+  height: 160px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+/* Сама фигура */
+.shape {
+  width: var(--shape-size);
+  height: var(--shape-size);
+  background: var(--shape-color);
+}
+
+/* Квадрат - слегка скруглённые углы, чтбы не был остроугловым */
+.shape-square {
+  border-radius: 4px;
+}
+
+/* круг - радиус скругления 50% превращает квадрат в круг */
+.shape-circle {
+  border-radius: 50%;
+}
+
+/* ================================================================
+   5. КНОПКИ И СТАТУС
+   ================================================================ */
+
+/* Блок с кнопками: выстраиваем в ряд */
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Общий стиль для всех кнопок страницы */
+button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color:#ffffff;
+  transition: filter 0.2s, transform 0.1s, opacity 0.25s, box-shadow 0.25s;
+}
+
+/* Эффект при наведении мыши: делаем кнопку ярче на 15% */
+button:hover {
+  filter: brightness(1.15);
+}
+
+/* Нажатие: кнопка словно проваливается - уменьшается и темнеет */
+button:active {
+  transform: scale(0.94);
+  filter: brightness(0.9);
+}
+
+/* Бледность кнопок при их неактивности */
+button.is-inactive {
+  opacity: 0.75;
+  filter: saturate(0.75);
+}
+button.is-inactive:hover {
+  filter: saturate(0.75);
+}
+button.is-active {
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.35), 0 2px 8px rgba(0,0,0,0.35);
+}
+
+/* Цвет кнопок - из переменных */
+.btn-start {
+  background: var(--btn-start);
+}
+.btn-stop {
+  background: var(--btn-stop);
+}
+
+/* Статус кнопок ("ВЫПОЛНЯЕТСЯ" / "ОСТАНОВЛЕНО") */
+.status {
+  font-size: 0.8rem;
+  margin-left: auto;
+  min-width: 90px;
+  text-align: center;
+}
+
+/* Цвет статуса зависит от data-state, который меняет файл main.js. */
+.status[data-state="running"] {
+  color: var(--btn-start);
+  font-weight: bold;
+}
+.status[data-state="stopped"] {
+  color: var(--btn-stop);
+  font-weight: bold;
+}

@@ -1,10 +1,12 @@
 📁 animation-exercises/
-📊 Итог: Папок: 5, Файлов: 15, Уровней вложенности: 4
+📊 Итог: Папок: 5, Файлов: 19, Уровней вложенности: 4
 
 ├── frontend
 │   ├── assets
 │   ├── css
+│   │   ├── anims.css
 │   │   └── style.css
+│   ├── favicon.svg
 │   ├── index.html
 │   └── js
 │       ├── exercises
@@ -17,7 +19,9 @@
 │       │   ├── 07-shake.js
 │       │   ├── 08-pulse.js
 │       │   ├── 09-slide.js
-│       │   └── 10-spin.js
+│       │   ├── 10-spin.js
+│       │   ├── 11-skew.js
+│       │   └── 12-glow.js
 │       └── main.js
 ├── requirements.txt
 └── tree.txt
